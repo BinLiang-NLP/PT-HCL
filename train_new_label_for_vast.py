@@ -22,7 +22,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
 
-from data_utils_new_label import build_tokenizer, build_embedding_matrix, Tokenizer4Bert, ABSADataset
+from data_utils_new_label import build_tokenizer, build_embedding_matrix, Tokenizer4Bert, ZSSDDataset
 from models import BERT_SPC
 
 logger = logging.getLogger()
@@ -49,11 +49,11 @@ class Instructor:
                 dat_fname='{0}_{1}_embedding_matrix.dat'.format(str(opt.embed_dim), opt.dataset))
             self.model = opt.model_class(embedding_matrix, opt).to(opt.device)
 
-        self.trainset = ABSADataset(opt.dataset_file['train'], tokenizer)
-        self.testset = ABSADataset(opt.dataset_file['test'], tokenizer)
+        self.trainset = ZSSDDataset(opt.dataset_file['train'], tokenizer)
+        self.testset = ZSSDDataset(opt.dataset_file['test'], tokenizer)
         if self.opt.is_test:
-            self.maskset = ABSADataset(opt.dataset_file['mask'], tokenizer)
-            self.sentenceset = ABSADataset(opt.dataset_file['sentence']+opt.method+'_'+opt.dataset+'.raw', tokenizer)
+            self.maskset = ZSSDDataset(opt.dataset_file['mask'], tokenizer)
+            self.sentenceset = ZSSDDataset(opt.dataset_file['sentence']+opt.method+'_'+opt.dataset+'.raw', tokenizer)
         assert 0 <= opt.valset_ratio < 1
         if opt.valset_ratio > 0:
             valset_len = int(len(self.trainset) * opt.valset_ratio)

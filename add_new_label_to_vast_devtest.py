@@ -5,8 +5,6 @@
 # @Version: 
 # @Author: BinLiang
 # @Mail: bin.liang@stu.hit.edu.cn
-# @For: 
-# @Created Time: Sun 04 Jul 2021 02:29:58 AM CST
 # ------------------
 
 def process(filename):

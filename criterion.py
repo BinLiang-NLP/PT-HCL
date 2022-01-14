@@ -60,15 +60,15 @@ class TraditionCriterion(_Loss):
         return loss
 
 
-class InfoNCE(nn.Module):
+class CL_pretext(nn.Module):
     """Supervised Contrastive Learning: https://arxiv.org/pdf/2004.11362.pdf.
     It also supports the unsupervised contrastive loss in SimCLR"""
     def __init__(self, opt, contrast_mode='all',
-                 base_temperature=0.07):
-        super(InfoNCE, self).__init__()
-        self.temperature = opt.temperature
+                 temperature=0.07):
+        super(CL_pretext, self).__init__()
+        self.temperature = opt.temperatureP
         self.contrast_mode = contrast_mode
-        self.base_temperature = base_temperature
+        #self.base_temperature = base_temperature
 
     def forward(self, features, labels=None, mask=None):
         """Compute loss for model. If both `labels` and `mask` are None,
@@ -138,15 +138,15 @@ class InfoNCE(nn.Module):
         return loss
 
 
-class Trans_stance(nn.Module):
+class CL_stance(nn.Module):
     """Supervised Contrastive Learning: https://arxiv.org/pdf/2004.11362.pdf.
     It also supports the unsupervised contrastive loss in SimCLR"""
     def __init__(self, opt, contrast_mode='all',
-                 base_temperature=0.07):
-        super(Trans_stance, self).__init__()
-        self.temperature = opt.temperature
+                 temperature=0.14):
+        super(CL_stance, self).__init__()
+        self.temperature = opt.temperatureP
         self.contrast_mode = contrast_mode
-        self.base_temperature = base_temperature
+        #self.base_temperature = base_temperature
         self.alpha = opt.alpha      # for the same target samples of the same stance label
         #self.beta = opt.beta        # for different target samples of the same stance label
 
@@ -204,19 +204,12 @@ class Trans_stance(nn.Module):
         # mask_neg = logits_mask
 
         similarity = torch.exp(torch.mm(anchor_feature, contrast_feature.t()) / self.temperature)
-        
-        alpha=2
-        t=2
-        align=(anchor_feature - contrast_feature).norm(p=2, dim=1).pow(alpha).mean()
-        uniform=torch.pdist(anchor_feature, p=2).pow(2).mul(-t).exp().mean().log()+torch.pdist(contrast_feature, p=2).pow(2).mul(-t).exp().mean().log()
-        
-        align_loss=torch.mean(torch.sum(align * mask_pos, 1))
-        uniform_loss=torch.mean(torch.sum(uniform * mask_pos, 1))
-        #print(align_loss)
-        #print(uniform_loss)
+
         pos = torch.sum(similarity * mask_pos, 1)
         neg = torch.sum(similarity * mask_neg, 1)
         loss = -(torch.mean(torch.log(pos / (pos + neg))))
         # if torch.isinf(loss) or torch.isnan(loss):
         #     loss = torch.zeros_like(loss).to(device)
-        return loss,align_loss,uniform_loss
+        return loss
+
+

@@ -12,7 +12,7 @@ from torch.utils.data import Dataset
 # from transformers import BertTokenizer
 from pytorch_pretrained_bert import BertTokenizer
 
-from gensim import corpora,models
+#from gensim import corpora,models
 from sklearn.metrics.pairwise import cosine_similarity
 
 def build_tokenizer(fnames, max_seq_len, dat_fname):
@@ -126,7 +126,7 @@ class Tokenizer4Bert:
         return pad_and_truncate(sequence, self.max_seq_len, padding=padding, truncating=truncating)
 
 
-class ABSADataset(Dataset):
+class ZSSDDataset(Dataset):
     def __init__(self, fname, tokenizer):
         fin = open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
         lines = fin.readlines()
