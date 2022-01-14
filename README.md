@@ -1,8 +1,15 @@
-step 0 :install requrements and put glove.42B.300d.txt in current directory
+# Introduction
+This repository was used in our paper:  
 
-step 1 : get topic words for 3 datasets by gensim.models.LdaModel and put them in './augment_data/sentence/'
-run run_pretext_task.sh with istest=0 to get a overfitting model ,put it in your 'state_dict_path'
-then run run_pretext_task.sh with istest=1 to do pretext task
+**Zero-Shot Stance Detection via Contrastive Learning**
+<br>
+Bin Liang, Zixiao Chen, Lin Gui, Yulan He, Min Yang, Ruifeng Xu<sup>\*</sup>. *Proceedings of WWW 2022*
 
-step 2: run run_zssd.sh to do ZSSD
+Please cite our paper and kindly give a star for this repository if you use this code.
 
+## Requirements
+- pytorch >= 0.4.0
+- numpy >= 1.13.3
+- sklearn
+- python 3.6 / 3.7
+- transformers
