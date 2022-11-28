@@ -58,9 +58,6 @@ class Instructor:
         if opt.valset_ratio > 0:
             valset_len = int(len(self.trainset) * opt.valset_ratio)
             self.trainset, self.valset = random_split(self.trainset, (len(self.trainset)-valset_len, valset_len))
-        elif 'vast' in opt.dataset:
-            logger.info('using dev for vast!')
-            self.valset = ZSSDDataset(opt.dataset_file['dev'], tokenizer)
         else:
             self.valset = self.testset
 
@@ -229,7 +226,7 @@ def main():
     parser.add_argument('--patience', default=10, type=int)
     parser.add_argument('--device', default=None, type=str, help='e.g. cuda:0')
     parser.add_argument('--seed', default=1234, type=int, help='set seed for reproducibility')
-    parser.add_argument('--valset_ratio', default=0.15, type=float, help='set ratio between 0 and 1 for validation support')
+    parser.add_argument('--valset_ratio', default=0, type=float, help='set ratio between 0 and 1 for validation support')
     parser.add_argument('--cl_loss_weight', default=1, type=float)
     parser.add_argument('--sup_loss_weight', default=0.8, type=float)
     parser.add_argument('--temperature', default=0.07, type=float)
